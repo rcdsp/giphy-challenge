@@ -34,6 +34,8 @@ as giphy profile and giphy image on title.
 
 There is way too much room for improvement but i think this also covers all requirements (at least non optional, gonna look if i can deploy to somewhere).
 
+App should be accesible in [this link](https://giphy-challenge-rcdsp-om9q2.ondigitalocean.app/).
+
 
 ## Build Setup
 

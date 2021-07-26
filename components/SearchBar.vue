@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="search(searchText)">
+  <form action="/" @submit.prevent="search(searchText)">
     <div class="gc-search_container">
       <input
         id="search"
