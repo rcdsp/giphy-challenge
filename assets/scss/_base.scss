@@ -1,0 +1,64 @@
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  width: 1040px;
+  margin: 0 auto;
+  color: $color-text;
+  background-color: $color-layout_background;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.headings {
+  color: $color-text;
+  font-weight: 700;
+  text-transform: capitalize;
+
+  &.dimmed {
+    color: $color-text_dimmed
+  }
+}
+
+h1 {
+  @extend .headings;
+  font-size: 3.6rem;
+
+  &.gc-search-title {
+    text-transform: none;
+  }
+}
+
+h2 {
+  @extend .headings;
+  font-size: 3.2rem;
+}
+
+h3 {
+  @extend .headings;
+  font-size: 2.4rem;
+}
+
+h4 {
+  @extend .headings;
+  font-size: 1.8rem;
+}
+
+h5 {
+  @extend .headings;
+  font-size: 1.6rem;
+}
+
+img {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: $color-giphy_1;
+}
