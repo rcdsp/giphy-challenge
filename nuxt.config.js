@@ -46,7 +46,14 @@ export default {
 
   fontawesome: {
     icons: {
-      solid: ['faSearch', 'faHeart', 'faLink', 'faCheckCircle', 'faShareSquare'],
+      solid: [
+        'faSearch',
+        'faHeart',
+        'faLink',
+        'faCheckCircle',
+        'faShareSquare',
+        'faChevronRight',
+      ],
     },
   },
 
@@ -70,4 +77,4 @@ export default {
       },
     },
   },
-}
+};

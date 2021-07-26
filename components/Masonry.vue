@@ -7,8 +7,8 @@
           <img :src="gif.images.fixed_width.url" :alt="gif.images.title" />
         </picture>
         <div class="gc-gif-overlay_top">
-          <font-awesome-icon icon="link"/>
-          <font-awesome-icon icon="heart"/>
+          <font-awesome-icon icon="link" />
+          <font-awesome-icon icon="heart" />
         </div>
         <div v-if="gif.user" class="gc-gif-overlay_bottom with_user">
           <img
@@ -18,7 +18,7 @@
           />
           <p class="gc-user-name">
             {{ gif.user.display_name }}
-            <font-awesome-icon icon="check-circle"/>
+            <font-awesome-icon icon="check-circle" />
           </p>
         </div>
         <div v-else class="gc-gif-overlay_bottom without_user">
@@ -30,8 +30,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Gif } from '~/types/gifs'
+import Vue from 'vue';
+import { Gif } from '~/types/gifs';
 export default Vue.extend({
   props: {
     // Where are the prop types vue?
@@ -40,22 +40,31 @@ export default Vue.extend({
       default: Object as () => [],
     },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
 @import '~/assets/scss/_variables.scss';
 .gc-masonry_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 24.8rem);
-  grid-template-rows: masonry;
-  gap: 1.6rem;
+  columns: 4 248px;
+  column-gap: 1.6rem;
+
+  > div {
+    width: 100%;
+    background: #ec985a;
+    color: white;
+    margin: 0 1rem 1rem 0;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-family: system-ui;
+    font-weight: 900;
+    font-size: 2rem;
+  }
 }
 
 .gc-gif-container {
   position: relative;
-  width: 100%;
-  height: auto;
   border-radius: 0.3rem;
   overflow: hidden;
 
@@ -164,6 +173,23 @@ export default Vue.extend({
 
   &:hover .gc-gif-overlay_bottom {
     opacity: 1;
+  }
+
+  .masonry-with-columns {
+    columns: 6 200px;
+    column-gap: 1rem;
+    div {
+      width: 150px;
+      background: #ec985a;
+      color: white;
+      margin: 0 1rem 1rem 0;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      font-family: system-ui;
+      font-weight: 900;
+      font-size: 2rem;
+    }
   }
 }
 </style>

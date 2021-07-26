@@ -1,5 +1,17 @@
 <template>
   <div>
+    <div v-if="!activeSearch" class="gc-home-page">
+      <div class="gc-home-section_title">
+        <h3 class="gc-search-title"><TrendingIcon /> Trending</h3>
+        <NuxtLink to="/trending" class="gc-text-label">
+          All GIFs <font-awesome-icon icon="chevron-right" />
+        </NuxtLink>
+      </div>
+
+      <div class="gc-trending-sampler">
+        <Masonry :gifs="results" />
+      </div>
+    </div>
     <div v-if="activeSearch" class="gc-results-container">
       <h1 class="gc-search-title">{{ searchText }}</h1>
       <Masonry :gifs="results" />
@@ -19,15 +31,19 @@ export default Vue.extend({
     };
   },
   async fetch() {
-    this.results = await this.$axios.$get('search', {
-      params: {
-        q: this.searchText,
-        limit: 25,
-        offset: 0,
-        rating: 'g',
-        lang: 'en',
-      },
-    });
+    if (this.activeSearch) {
+      this.results = await this.$axios.$get('search', {
+        params: {
+          q: this.searchText,
+          limit: 50,
+          offset: 0,
+          rating: 'g',
+          lang: 'en',
+        },
+      });
+    } else {
+      this.results = await this.$axios.$get('trending');
+    }
   },
   computed: {
     searchText(): string {
@@ -44,5 +60,33 @@ export default Vue.extend({
       }
     },
   },
+  methods: {
+    async search(): Promise<GifResults> {
+      return await this.$axios.$get('search', {
+        params: {
+          q: this.searchText,
+          limit: 50,
+          offset: 0,
+          rating: 'g',
+          lang: 'en',
+        },
+      });
+    },
+  },
 });
 </script>
+
+<style lang="scss" scoped>
+.gc-home-section_title {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  h3 {
+    place-self: center start;
+  }
+
+  .gc-text-label {
+    place-self: center end;
+  }
+}
+</style>

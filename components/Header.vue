@@ -2,7 +2,13 @@
   <header class="container">
     <div class="gc-header_top">
       <NuxtLink to="/">
-        <img class="gc-logo" src="~/static/images/logo.png" alt="GIPHY Logo" />
+        <object type="image/svg+xml" data="~/assets/icons/logo.svg.svg">
+          <img
+            class="gc-logo"
+            src="~/static/images/logo.png"
+            alt="GIPHY Logo"
+          />
+        </object>
       </NuxtLink>
     </div>
     <SearchBar />
@@ -10,7 +16,6 @@
 </template>
 
 <style scoped>
-
 .gc-header_top {
   padding: 1rem 0;
   display: grid;
