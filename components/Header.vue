@@ -2,13 +2,13 @@
   <header class="container">
     <div class="gc-header_top">
       <NuxtLink to="/">
-        <object type="image/svg+xml" data="~/assets/icons/logo.svg.svg">
+        <div class="gc-logo">
+          <Logo />
           <img
-            class="gc-logo"
             src="~/static/images/logo.png"
             alt="GIPHY Logo"
           />
-        </object>
+        </div>
       </NuxtLink>
       <button class="gc-login-button">Login</button>
     </div>
@@ -29,6 +29,12 @@
 .gc-logo {
   grid-area: logo;
   max-width: 18rem;
+
+  img {
+    position: absolute;
+    z-index: -1;
+    visibility: hidden;
+  }
 }
 
 .gc-login-button {

@@ -30,8 +30,6 @@ export default Vue.extend({
 
   > div {
     width: 100%;
-    background: #ec985a;
-    color: white;
     margin: 0 1rem 1rem 0;
     display: inline-block;
     width: 100%;

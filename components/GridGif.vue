@@ -98,15 +98,16 @@ export default Vue.extend({
     );
     opacity: 0;
     transition: opacity ease-in-out 0.2s;
-
-    img {
-      width: 1.6rem;
-      height: auto;
-    }
+    color: $color-text;
   }
 
   &:hover .gc-gif-overlay_top {
     opacity: 1;
+
+    a {
+      display: inline;
+      color: $color-text;
+    }
   }
 
   .gc-gif-overlay_bottom {
@@ -161,23 +162,6 @@ export default Vue.extend({
 
   &:hover .gc-gif-overlay_bottom {
     opacity: 1;
-  }
-
-  .masonry-with-columns {
-    columns: 6 200px;
-    column-gap: 1rem;
-    div {
-      width: 150px;
-      background: #ec985a;
-      color: white;
-      margin: 0 1rem 1rem 0;
-      display: inline-block;
-      width: 100%;
-      text-align: center;
-      font-family: system-ui;
-      font-weight: 900;
-      font-size: 2rem;
-    }
   }
 }
 </style>

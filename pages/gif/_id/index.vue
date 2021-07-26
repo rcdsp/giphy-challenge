@@ -58,6 +58,7 @@
       <a :href="gif.url" target="_blank">
         <h1>{{ gif.title }}</h1>
       </a>
+
       <video
         :width="rendition.width"
         :height="rendition.height"
