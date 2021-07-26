@@ -14,13 +14,3 @@ export const formatBytes = (bytesString: string, decimals = 2) => {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
-
-export const splitArrayInGroups = (arr: any[], size: number) => {
-  const result = [];
-  let pos = 0;
-  while (pos < arr.length) {
-    result.push(arr.slice(pos, pos + size));
-    pos += size;
-  }
-  return result;
-};

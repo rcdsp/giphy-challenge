@@ -18,5 +18,8 @@ export default Vue.extend({
   async fetch() {
     this.gifs = await this.$axios.$get('trending');
   },
+  head: {
+    title: 'Trending | Giphy Code Challenge',
+  },
 });
 </script>

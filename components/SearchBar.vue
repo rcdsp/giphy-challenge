@@ -31,18 +31,18 @@ export default Vue.extend({
   },
   watch: {
     '$route.query.search': {
-      handler (value) {
+      handler(value) {
         if (value === undefined) {
           this.searchText = '';
           this.$store.dispatch('search', this.searchText);
         }
-      }
+      },
     },
   },
   methods: {
     search() {
-      this.$router.replace({path: '/', query: { search: this.searchText } });
-      this.$store.dispatch('search', this.searchText);
+      this.$router.replace({ path: '/', query: { search: this.searchText } });
+      this.$store.dispatch('search/makeSearch', this.searchText);
     },
   },
 });

@@ -45,6 +45,13 @@ export default Vue.extend({
       this.results = await this.$axios.$get('trending');
     }
   },
+  head() {
+    return {
+      title: this.$route.query.search
+        ? `Gifs of ${this.$route.query.search} search | Giphy Code Challenge`
+        : 'Giphy Code Challenge',
+    };
+  },
   computed: {
     searchText(): string {
       return this.$route.query?.search || this.$store.getters.getSearchText;
@@ -58,19 +65,6 @@ export default Vue.extend({
       if (newSearchText !== oldSearchText) {
         this.$fetch();
       }
-    },
-  },
-  methods: {
-    async search(): Promise<GifResults> {
-      return await this.$axios.$get('search', {
-        params: {
-          q: this.searchText,
-          limit: 50,
-          offset: 0,
-          rating: 'g',
-          lang: 'en',
-        },
-      });
     },
   },
 });

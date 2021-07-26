@@ -10,15 +10,17 @@
             :src="author.avatar_url"
             :alt="author.display_name"
           />
-          <p class="gc-user_badge-name">
-            {{ author.display_name }}
-            <font-awesome-icon icon="check-circle" />
-          </p>
+          <a :href="author.profile_url" target="_blank">
+            <p class="gc-user_badge-name">
+              {{ author.display_name }}
+              <font-awesome-icon icon="check-circle" />
+            </p>
+          </a>
         </div>
         <p class="gc-user_description">{{ author.description }}</p>
         <!-- social -->
         <div v-if="hasSocial" class="gc-user_social">
-          <p class="gc-section-label">Follow on:</p>
+          <p class="gc-text-label">Follow on:</p>
           <a
             v-if="author.facebook_url"
             :href="author.facebook_url"
@@ -53,11 +55,24 @@
     </aside>
     <!-- GIF DISPLAY -->
     <div class="gc-gif-detail_main">
-      <h1>{{ gif.title }}</h1>
-      <picture>
-        <source :srcset="rendition.webp" type="image/webp" />
-        <img :src="rendition.url" :alt="gif.title" />
-      </picture>
+      <a :href="gif.url" target="_blank">
+        <h1>{{ gif.title }}</h1>
+      </a>
+      <video
+        :width="rendition.width"
+        :height="rendition.height"
+        :src="rendition.mp4"
+        :alt="gif.title"
+        autoplay
+        loop
+        playsinline
+        :poster="rendition.url"
+      >
+        <img
+          :src="rendition.url"
+          title="Your browser does not support the <video> tag"
+        />
+      </video>
     </div>
     <!-- DETAILS SIDEBAR -->
     <aside class="gc-gif-detail_side_r">
@@ -84,7 +99,7 @@
     <!-- GIF TAGS -->
     <section class="gc-gif-tags">
       <div v-for="tag in tags" :key="tag.id" class="gc-gif-tag">
-        <span>{{tag.value}}</span>
+        <span>{{ tag.value }}</span>
       </div>
     </section>
     <!-- RELATED GIFS -->
@@ -124,12 +139,17 @@ export default Vue.extend({
       gif: {} as Gif,
     };
   },
+  head() {
+    return {
+      title: this.$data.gif.title,
+    };
+  },
   computed: {
     tags(): any[] {
       // TODO find out where to get gif tags on giphy dev guides.
       // api does not seem to provide tags for gif on the response, to fill section i splitted the title into words to act as tags.
       const tags = this.gif.title.split(' ');
-      return tags.map((t, i) => ({id: `${i}-${t}`, value: `#${t}`}));
+      return tags.map((t, i) => ({ id: `${i}-${t}`, value: `#${t}` }));
     },
     rendition(): Original {
       return this.gif.images.original;
@@ -148,7 +168,7 @@ export default Vue.extend({
       );
     },
     dateCreated(): string {
-      return moment(this.gif.import_datetime).calendar()
+      return moment(this.gif.import_datetime).calendar();
     },
     author(): GifUser {
       return this.gif.user;
@@ -265,7 +285,7 @@ export default Vue.extend({
 
     span {
       font-weight: 400;
-      color: $color-text
+      color: $color-text;
     }
   }
 
