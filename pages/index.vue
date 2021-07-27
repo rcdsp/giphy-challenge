@@ -1,19 +1,13 @@
 <template>
-  <div>
-    <div v-if="!activeSearch" class="gc-home-page">
-      <div class="gc-home-section_title">
-        <h3 class="gc-search-title"><TrendingIcon /> Trending</h3>
-        <NuxtLink to="/trending" class="gc-text-label">
-          All GIFs <font-awesome-icon icon="chevron-right" />
-        </NuxtLink>
-      </div>
-
-      <div class="gc-trending-sampler">
-        <Masonry :gifs="results" />
-      </div>
+  <div class="gc-home-page">
+    <div v-if="!activeSearch" class="gc-home-section_title">
+      <h3 class="gc-search-title"><TrendingIcon /> Trending</h3>
+      <NuxtLink to="/trending" class="gc-text-label">
+        All GIFs <font-awesome-icon icon="chevron-right" />
+      </NuxtLink>
     </div>
-    <div v-if="activeSearch" class="gc-results-container">
-      <h1 class="gc-search-title">{{ searchText }}</h1>
+    <h1 v-if="activeSearch" class="gc-search-title">{{ searchText }}</h1>
+    <div class="gc-results-container">
       <Masonry :gifs="results" />
     </div>
   </div>
@@ -21,50 +15,97 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { GifResults } from '~/types/gifs';
+import { mapGetters, mapActions } from 'vuex';
+import { search } from '~/utils';
 
 export default Vue.extend({
   layout: 'giphy',
   data() {
     return {
-      results: {} as GifResults,
+      searchLimit: 50,
+      searchOffset: 0,
     };
   },
   async fetch() {
     if (this.activeSearch) {
-      this.results = await this.$axios.$get('search', {
-        params: {
-          q: this.searchText,
-          limit: 50,
-          offset: 0,
-          rating: 'g',
-          lang: 'en',
-        },
-      });
+      if (process.browser) {
+        const results = await this.search(
+          this.$axios,
+          this.searchText,
+          this.searchLimit,
+          this.searchOffset
+        );
+        this.setSearch({ searchText: this.searchText, results });
+      } else {
+        const searchText = this.$route.query.search as string;
+        const results = await this.search(
+          this.$axios,
+          searchText,
+          this.searchLimit,
+          this.searchOffset
+        );
+        this.setSearch({ searchText, results });
+      }
     } else {
-      this.results = await this.$axios.$get('trending');
+      const trending = await this.$axios.$get('trending');
+      this.setResults(trending);
     }
   },
   head() {
     return {
-      title: this.$route.query.search
-        ? `Gifs of ${this.$route.query.search} search | Giphy Code Challenge`
-        : 'Giphy Code Challenge',
+      title:
+        this.searchText !== ''
+          ? `Gifs of ${this.$route.query.search} search | Giphy Code Challenge`
+          : 'Giphy Code Challenge',
     };
   },
   computed: {
-    searchText(): string {
-      return this.$route.query?.search || this.$store.getters.getSearchText;
-    },
+    ...mapGetters({
+      searchText: 'search/getSearchText',
+      results: 'search/getSearchResults',
+    }),
     activeSearch(): boolean {
-      return this.$route.query?.search !== undefined && this.searchText !== '';
+      if (process.browser) {
+        return this.searchText !== '';
+      } else {
+        return this.$route.query.search !== undefined;
+      }
     },
   },
   watch: {
-    searchText(newSearchText, oldSearchText) {
-      if (newSearchText !== oldSearchText) {
-        this.$fetch();
-      }
+    searchText() {
+      this.$fetch();
+    },
+  },
+  mounted() {
+    if (process.browser) {
+      window.onscroll = () => {
+        if (
+          window.innerHeight + window.pageYOffset >= document.body.offsetHeight
+        ) {
+          this.paginate();
+        }
+      };
+    }
+  },
+  methods: {
+    search, // map generic search to this component's search
+    ...mapActions({
+      setSearch: 'search/setSearch',
+      setSearchText: 'search/setSearchText',
+      setResults: 'search/setResults',
+      addResults: 'search/addResults',
+    }),
+    async paginate() {
+      this.searchOffset++;
+      const newOffset = this.searchLimit * (this.searchOffset);
+      const nextBatch = await this.search(
+        this.$axios,
+        this.searchText,
+        this.searchLimit,
+        newOffset
+      );
+      this.addResults(nextBatch.data);
     },
   },
 });

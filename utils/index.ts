@@ -1,3 +1,5 @@
+import { NuxtAxiosInstance } from "@nuxtjs/axios";
+
 export const friendlyUrl = (url: string) => {
   return url.replace(/^https?:\/\//g, '');
 };
@@ -13,4 +15,19 @@ export const formatBytes = (bytesString: string, decimals = 2) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+
+export const search = async (
+  axios: NuxtAxiosInstance,
+  q: string,
+  limit: number = 50,
+  offset: number = 0,
+  rating: string = 'g',
+  lang: string = 'en'
+) => {
+  const results = await axios.$get('search', {
+    params: { q, limit, offset, rating, lang },
+  });
+
+  return results
 };

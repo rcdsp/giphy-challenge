@@ -1,9 +1,9 @@
 <template>
-  <form action="/" @submit.prevent="search(searchText)">
+  <form action="/" @submit.prevent="handleSubmit(searchInput)">
     <div class="gc-search_container">
       <input
         id="search"
-        v-model="searchText"
+        v-model="searchInput"
         name="search"
         type="text"
         placeholder="Search all the GIFs"
@@ -21,28 +21,37 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default Vue.extend({
   name: 'SearchBar',
   data() {
     return {
-      searchText: this.$route.query.search,
+      searchInput: this.$store.getters.getSearchText || this.$route.query.search || '',
     };
+  },
+  computed: {
+    ...mapGetters({
+      searchText: 'search/getSearchText',
+    }),
   },
   watch: {
     '$route.query.search': {
       handler(value) {
         if (value === undefined) {
-          this.searchText = '';
-          this.$store.dispatch('search', this.searchText);
+          this.searchInput = '';
+          this.setSearchText('');
         }
       },
     },
   },
   methods: {
-    search() {
+    ...mapActions({
+      setSearchText: 'search/setSearchText',
+    }),
+    handleSubmit() {
+      this.setSearchText(this.searchInput);
       this.$router.replace({ path: '/', query: { search: this.searchText } });
-      this.$store.dispatch('search/makeSearch', this.searchText);
     },
   },
 });
